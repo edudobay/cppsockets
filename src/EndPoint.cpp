@@ -1,10 +1,14 @@
 #include "EndPoint.h"
 #include "Error.h"
+#include <sys/un.h>
 #include <cstring>
 #include <errno.h>
 #include <sstream>
 
 using std::stringstream;
+
+EndPoint::EndPoint()
+{}
 
 EndPoint::EndPoint(sockaddr *address, socklen_t address_len)
 {
@@ -130,4 +134,28 @@ string addrinfoParse (const addrinfo *addr, unsigned short& port)
 {
    return getAddressAndPort (addr->ai_family, addr->ai_addr, port);
 }
+
+// ---------------------------------------------------------------------------
+
+UnixEndPoint::UnixEndPoint(const char *path)
+   : UnixEndPoint(path, strlen(path))
+{}
+
+UnixEndPoint::UnixEndPoint(const char *path, int path_len)
+{
+   sockaddr_un *addr = reinterpret_cast<sockaddr_un*> (&sa);
+
+   addr->sun_family = AF_UNIX;
+
+   int maxSize = sizeof addr->sun_path;
+   int len = (path_len > maxSize) ? maxSize : path_len;
+   memcpy(addr->sun_path, path, len);
+
+   sa_len = len + reinterpret_cast<char*> (&(addr->sun_path)) - 
+      reinterpret_cast<char*> (addr);
+}
+
+UnixEndPoint::UnixEndPoint(sockaddr *address, socklen_t address_len)
+   : EndPoint(address, address_len)
+{}
 

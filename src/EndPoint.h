@@ -18,6 +18,8 @@ protected:
    sockaddr_storage sa;
    socklen_t sa_len = 0;
 
+   EndPoint();
+
 public:
    EndPoint(sockaddr *address, socklen_t address_len);
    virtual int getAddressFamily() const;
@@ -45,5 +47,13 @@ public:
 string getAddressAndPort (int family, const sockaddr *sa, unsigned short& port);
 string sockaddrParse (const sockaddr *sa, unsigned short& port);
 string addrinfoParse (const addrinfo *addr, unsigned short& port);
+
+// ---------------------------------------------------------------------------
+
+class UnixEndPoint : public EndPoint {
+   UnixEndPoint(const char *path);
+   UnixEndPoint(const char *path, int path_len);
+   UnixEndPoint(sockaddr *address, socklen_t address_len);
+};
 
 #endif /* __ENDPOINT_H */
