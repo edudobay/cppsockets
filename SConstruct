@@ -9,5 +9,6 @@ lib_sources = ['src/' + fn + '.cpp' for fn in Split('EndPoint Error Poll Socket 
 
 env.Program(target='bin/test', source=['test.cpp'] + lib_sources)
 env.Program(target='bin/testsvr', source=['testsvr.cpp'] + lib_sources)
+env.Program(target='bin/testpoll', source=['testpoll.cpp'] + lib_sources)
 
 # vim:set ft=python sw=3:
