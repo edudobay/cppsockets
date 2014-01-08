@@ -1,7 +1,8 @@
-A C++ library for manipulating sockets, that aims to be as easy to use as
-possible for those familiar with BSD sockets.
+A C++ library for manipulating sockets, that aims to be easy to use through a
+familiar Berkeley sockets interface, while incorporating modern programming
+techniques and newer functions from the POSIX sockets API.
 
-Uses features available only in C++11.
+*C++11 support is required.*
 
 ## Files
 * `test.cpp` and `testsvr.cpp`: some simple examples of how the library may be used
