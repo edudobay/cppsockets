@@ -14,7 +14,7 @@ typedef int socket_t;
 using std::shared_ptr;
 using std::string;
 
-enum ShutdownMode {
+enum class ShutdownMode {
    Read = SHUT_RD,
    Write = SHUT_WR,
    ReadWrite = SHUT_RDWR
