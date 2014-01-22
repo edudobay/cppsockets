@@ -45,6 +45,8 @@ public:
 
    int send (const char *data, size_t length);
    int send (string str);
+   int send_all (const char *data, size_t length);
+   int send_all (string str);
 
    int recv (char *data, size_t length);
    string recv (size_t length);

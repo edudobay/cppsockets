@@ -96,6 +96,22 @@ int Socket::send (string str)
    return send(str.c_str(), str.length());
 }
 
+int Socket::send_all (const char *data, size_t length)
+{
+   size_t sent = 0;
+   const char *p = data;
+   while (sent < length) {
+      sent += send(p, length - sent);
+      p = data + sent;
+   }
+   return sent;
+}
+
+int Socket::send_all (string str)
+{
+   return send_all(str.c_str(), str.length());
+}
+
 int Socket::recv (char *data, size_t length)
 {
    int nbytes = ::recv(descriptor, data, length, 0);
