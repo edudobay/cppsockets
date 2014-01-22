@@ -2,20 +2,44 @@
 #define __ERROR_H
 
 #include <exception>
+#include <string>
 
 using std::exception;
+using std::string;
 
 #define ERRNO_STRLEN 512
 
-class UnixError : public exception {
+// ---------------------------------------------------------------------------
+
+class ITracksSource {
 protected:
-   char buf[ERRNO_STRLEN];
-   int num;
+   string func, filename;
+   int line;
 
 public:
-   UnixError(int errnum);
-   const char *what();
+   ITracksSource(const char *func, const char *filename, int line);
+   string getSourceFunction() const;
+   string getSourceFilename() const;
+   int getSourceLine();
 };
+
+// ---------------------------------------------------------------------------
+
+class UnixError : public exception, public ITracksSource {
+protected:
+   int num;
+   string failed_func;
+   char error_str[ERRNO_STRLEN];
+   string description;
+
+public:
+   UnixError(int errnum, const char *failed_func,
+         const char *source_func, const char *filename, int line);
+   const char *what() const noexcept;
+   const char *source() const noexcept;
+};
+
+// ---------------------------------------------------------------------------
 
 class NameResolutionError : public exception {
 protected:
@@ -25,5 +49,9 @@ public:
    NameResolutionError(const char *);
    const char *what();
 };
+
+// ---------------------------------------------------------------------------
+
+#define SOCKET_ERROR(num, func) throw UnixError(num, func, __PRETTY_FUNCTION__, __FILE__, __LINE__)
 
 #endif /* __ERROR_H */

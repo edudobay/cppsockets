@@ -28,7 +28,7 @@ TCPSocket::TCPSocket(addrinfo *addr)
    }
 
    if (descriptor == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "socket");
    }
 }
 
@@ -37,7 +37,7 @@ void TCPSocket::connect (const char *hostname, const char *service)
    InetEndPoint ep = InetEndPoint::queryOne (hostname, service, protocol_family);
 
    if (::connect(descriptor, ep.getSockAddr(), ep.getSockAddrLen()) == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "connect");
    }
 }
 
@@ -62,7 +62,7 @@ shared_ptr<TCPSocket> TCPSocket::accept (shared_ptr<InetEndPoint> &endpoint)
 
    socket_t client = ::accept(descriptor, reinterpret_cast<sockaddr*> (&sa), &sa_size);
    if (client == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "accept");
    }
 
    endpoint.reset(new InetEndPoint(reinterpret_cast<sockaddr*> (&sa), sa_size));

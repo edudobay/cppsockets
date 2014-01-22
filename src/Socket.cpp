@@ -17,7 +17,7 @@ Socket::Socket(int family, int socktype, int protocol)
    descriptor = socket(family, socktype, protocol);
 
    if (descriptor == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "socket");
    }
 }
 
@@ -27,7 +27,7 @@ Socket::Socket(EndPoint& endpoint, int socktype, int protocol)
          socktype, protocol);
 
    if (descriptor == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "socket");
    }
 
    connect(endpoint);
@@ -36,21 +36,21 @@ Socket::Socket(EndPoint& endpoint, int socktype, int protocol)
 void Socket::connect (const EndPoint &endpoint)
 {
    if (::connect(descriptor, endpoint.getSockAddr(), endpoint.getSockAddrLen()) == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "connect");
    }
 }
 
 void Socket::bind (const EndPoint& endpoint)
 {
    if (::bind(descriptor, endpoint.getSockAddr(), endpoint.getSockAddrLen()) == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "bind");
    }
 }
 
 void Socket::listen (int num)
 {
    if (::listen(descriptor, num) == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "listen");
    }
 }
 
@@ -61,7 +61,7 @@ shared_ptr<Socket> Socket::accept (shared_ptr<EndPoint> &endpoint)
 
    socket_t client = ::accept(descriptor, reinterpret_cast<sockaddr*> (&sa), &sa_size);
    if (client == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "accept");
    }
 
    endpoint.reset(new EndPoint(reinterpret_cast<sockaddr*> (&sa), sa_size));
@@ -71,14 +71,14 @@ shared_ptr<Socket> Socket::accept (shared_ptr<EndPoint> &endpoint)
 void Socket::shutdown (ShutdownMode mode)
 {
    if (::shutdown(descriptor, static_cast<int>(mode)) == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "shutdown");
    }
 }
 
 void Socket::close ()
 {
    if (::close(descriptor) == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "close");
    }
 }
 
@@ -86,7 +86,7 @@ int Socket::send (const char *data, size_t length)
 {
    int nbytes = ::send(descriptor, data, length, 0);
    if (nbytes == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "send");
    }
    return nbytes;
 }
@@ -100,7 +100,7 @@ int Socket::recv (char *data, size_t length)
 {
    int nbytes = ::recv(descriptor, data, length, 0);
    if (nbytes == -1) {
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "recv");
    }
    return nbytes;
 }

@@ -58,7 +58,7 @@ addrinfo *InetEndPoint::queryAddrInfo (const char *hostname, const char *service
          throw NameResolutionError(gai_strerror(status));
       }
       else {
-         throw UnixError(errno);
+         SOCKET_ERROR(errno, "getaddrinfo");
       }
    }
 
@@ -120,7 +120,7 @@ string getAddressAndPort (int family, const sockaddr *sa, unsigned short& port)
 
    const char *result = inet_ntop(family, in_addr, address_buf, sizeof address_buf);
    if (!result)
-      throw UnixError(errno);
+      SOCKET_ERROR(errno, "inet_ntop");
 
    return string(address_buf);
 }
