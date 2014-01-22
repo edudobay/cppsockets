@@ -24,14 +24,13 @@ int main(int argc, char *argv[])
 
       {
          shared_ptr<InetEndPoint> remote;
-         shared_ptr<TCPSocket> p_client = sock.accept(remote);
-         TCPSocket& client = *p_client;
+         shared_ptr<TCPSocket> client = sock.accept(remote);
          cout << "Remote connection from " << remote->toString() << endl;
 
-         client.send("Hello, dear customer!\n");
+         client->send("Hello, dear customer!\n");
          while (true) {
-            string data = client.recv(50);
-            client.send("Well done!\n");
+            string data = client->recv(50);
+            client->send("Well done!\n");
             cout << "Received data\n\033[37;40m" << data << "\033[0m" << endl;
 
             if (data == ".\n")
@@ -40,10 +39,10 @@ int main(int argc, char *argv[])
 
 
          cout << "Disconnecting." << endl;
-         client.shutdown(Write);
+         client->shutdown(Write);
 
          cout << "Closing." << endl;
-         client.close();
+         client->close();
       }
 
       cout << "Shutting down listener." << endl;
@@ -53,7 +52,7 @@ int main(int argc, char *argv[])
       sock.close();
    }
    catch (UnixError& ex) {
-      cout << "UnixError: " << ex.what() << endl;
+      cout << "UnixError: " << ex.what() << "\n   " << ex.source() << endl;
    }
    catch (NameResolutionError& ex) {
       cout << "NameResolutionError: " << ex.what() << endl;

@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
       sock.close();
    }
    catch (UnixError& ex) {
-      cout << "UnixError: " << ex.what() << endl;
+      cout << "UnixError: " << ex.what() << "\n   " << ex.source() << endl;
    }
    catch (NameResolutionError& ex) {
       cout << "NameResolutionError: " << ex.what() << endl;

@@ -33,12 +33,11 @@ int main(int argc, char *argv[])
             // new connection for the server to accept
             if (fds[0].revents & POLLIN) {
                shared_ptr<InetEndPoint> remote;
-               shared_ptr<TCPSocket> p_client = sock.accept(remote);
-               TCPSocket& client = *p_client;
+               shared_ptr<TCPSocket> client(sock.accept(remote));
                cout << "Remote connection from " << remote->toString() << endl;
 
-               clients.push_back(p_client);
-               fds.push_back({.fd = client, .events = POLLIN | POLLOUT, .revents = 0});
+               clients.push_back(client);
+               fds.push_back({.fd = *client, .events = POLLIN | POLLOUT, .revents = 0});
             }
 
             for (auto it = fds.begin() + 1; it != fds.end(); ++it) {
@@ -48,7 +47,7 @@ int main(int argc, char *argv[])
 
                if (fd.revents & POLLIN) {
                   string data = client->recv(50);
-                  cout << "Received data\n\033[37;40m" << data << "\033[0m" << endl;
+                  cout << "Received data (" << fd.revents << ")\n\033[37;40m" << data << "\033[0m" << endl;
 
                   if (data == ".\n") {
                      cout << "Closing this client connection" << endl;
@@ -64,6 +63,16 @@ int main(int argc, char *argv[])
                   else if (data == "!\n") {
                      shutdown = true;
                   }
+               }
+
+               if (fd.revents & POLLHUP) {
+                  client->close();
+
+                  // preserve old iterator to continue the loop
+                  auto old_it = it - 1;
+                  fds.erase(it);
+                  clients.erase(client_it);
+                  it = old_it;
                }
             }
 
@@ -85,7 +94,7 @@ int main(int argc, char *argv[])
       sock.close();
    }
    catch (UnixError& ex) {
-      cout << "UnixError: " << ex.what() << endl;
+      cout << "UnixError: " << ex.what() << "\n   " << ex.source() << endl;
    }
    catch (NameResolutionError& ex) {
       cout << "NameResolutionError: " << ex.what() << endl;
