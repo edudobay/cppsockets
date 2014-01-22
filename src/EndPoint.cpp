@@ -86,23 +86,43 @@ InetEndPoint InetEndPoint::queryOne (const char *hostname, const char *service, 
    return endpoint;
 }
 
-void InetEndPoint::getHostnameAndPort (string& hostname, unsigned short& port) const
+InetEndPoint InetEndPoint::queryOne (const char *hostname, ip_port_t port, int family /* = AF_UNSPEC */)
+{
+   // convert the port to a string
+   char port_s[7];
+   snprintf(port_s, 7, "%hu", port);
+
+   return queryOne (hostname, port_s, family);
+}
+
+void InetEndPoint::getAddressAndPort (string& hostname, ip_port_t& port) const
 {
    hostname.assign (sockaddrParse(reinterpret_cast<const sockaddr*>(&sa), port));
+}
+
+string InetEndPoint::getAddressAndPort (ip_port_t& port) const
+{
+   return sockaddrParse(reinterpret_cast<const sockaddr*>(&sa), port);
+}
+
+string InetEndPoint::getAddress () const
+{
+   ip_port_t port;
+   return getAddressAndPort (port);
 }
 
 string InetEndPoint::toString () const
 {
    string hostname;
-   unsigned short port;
-   getHostnameAndPort (hostname, port);
+   ip_port_t port;
+   getAddressAndPort (hostname, port);
 
    stringstream ss;
    ss << hostname << ":" << port;
    return ss.str();
 }
 
-string getAddressAndPort (int family, const sockaddr *sa, unsigned short& port)
+string getAddressAndPort (int family, const sockaddr *sa, ip_port_t& port)
 {
    char address_buf[INET6_ADDRSTRLEN];
 
@@ -125,12 +145,12 @@ string getAddressAndPort (int family, const sockaddr *sa, unsigned short& port)
    return string(address_buf);
 }
 
-string sockaddrParse (const sockaddr *sa, unsigned short& port)
+string sockaddrParse (const sockaddr *sa, ip_port_t& port)
 {
    return getAddressAndPort (sa->sa_family, sa, port);
 }
 
-string addrinfoParse (const addrinfo *addr, unsigned short& port)
+string addrinfoParse (const addrinfo *addr, ip_port_t& port)
 {
    return getAddressAndPort (addr->ai_family, addr->ai_addr, port);
 }
