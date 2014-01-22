@@ -1,6 +1,8 @@
 #include "Socket.h"
 #include "Error.h"
 
+#include <sys/unistd.h>
+#include <sys/fcntl.h>
 #include <errno.h>
 
 namespace cppsockets {
@@ -81,6 +83,18 @@ void Socket::close ()
 {
    if (::close(descriptor) == -1) {
       SOCKET_ERROR(errno, "close");
+   }
+}
+
+void Socket::setBlockMode (BlockingMode mode)
+{
+   int oldFlags = fcntl(descriptor, F_GETFL);
+   int newFlags = (mode == BlockingMode::NonBlocking) ?
+         (oldFlags | O_NONBLOCK) :
+         (oldFlags & ~O_NONBLOCK);
+
+   if (fcntl(descriptor, F_SETFL, newFlags) == -1) {
+      SOCKET_ERROR(errno, "fcntl");
    }
 }
 

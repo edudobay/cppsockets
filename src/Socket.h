@@ -22,6 +22,11 @@ enum class ShutdownMode {
    ReadWrite = SHUT_RDWR
 };
 
+enum class BlockingMode {
+   Blocking,
+   NonBlocking
+};
+
 class Socket {
 protected:
    socket_t descriptor = -1;
@@ -44,6 +49,8 @@ public:
    virtual shared_ptr<Socket> accept(shared_ptr<EndPoint> &endpoint);
    void shutdown (ShutdownMode mode);
    void close ();
+
+   void setBlockMode (BlockingMode mode);
 
    int send (const char *data, size_t length);
    int send (string str);
