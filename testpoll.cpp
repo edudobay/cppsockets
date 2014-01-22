@@ -6,6 +6,8 @@
 using std::cout;
 using std::endl;
 
+using namespace cppsockets;
+
 int main(int argc, char *argv[])
 {
    if (argc < 2)
