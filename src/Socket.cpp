@@ -3,6 +3,8 @@
 
 #include <errno.h>
 
+namespace cppsockets {
+
 Socket::Socket()
    : descriptor(-1)
 {}
@@ -133,3 +135,4 @@ Socket::operator socket_t () const
    return descriptor;
 }
 
+} // namespace cppsockets

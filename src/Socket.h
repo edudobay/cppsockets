@@ -1,5 +1,5 @@
-#ifndef __SOCKET_H
-#define __SOCKET_H
+#ifndef __CPPSOCKETS__SOCKET_H
+#define __CPPSOCKETS__SOCKET_H
 
 #include "EndPoint.h"
 
@@ -8,6 +8,8 @@
 
 #include <memory>
 #include <string>
+
+namespace cppsockets {
 
 typedef int socket_t;
 
@@ -54,4 +56,6 @@ public:
    operator socket_t () const;
 };
 
-#endif /* __SOCKET_H */
+} // namespace cppsockets
+
+#endif /* __CPPSOCKETS__SOCKET_H */

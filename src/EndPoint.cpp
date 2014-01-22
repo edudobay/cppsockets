@@ -5,6 +5,8 @@
 #include <errno.h>
 #include <sstream>
 
+namespace cppsockets {
+
 using std::stringstream;
 
 EndPoint::EndPoint()
@@ -179,3 +181,4 @@ UnixEndPoint::UnixEndPoint(sockaddr *address, socklen_t address_len)
    : EndPoint(address, address_len)
 {}
 
+} // namespace cppsockets

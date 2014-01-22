@@ -3,6 +3,8 @@
 
 #include <errno.h>
 
+namespace cppsockets {
+
 TCPSocket::TCPSocket(socket_t s)
    : Socket(s)
 {}
@@ -69,3 +71,4 @@ shared_ptr<TCPSocket> TCPSocket::accept (shared_ptr<InetEndPoint> &endpoint)
    return shared_ptr<TCPSocket>(new TCPSocket(client));
 }
 
+} // namespace cppsockets

@@ -1,7 +1,9 @@
-#ifndef __TCPSOCKET_H
-#define __TCPSOCKET_H
+#ifndef __CPPSOCKETS__TCPSOCKET_H
+#define __CPPSOCKETS__TCPSOCKET_H
 
 #include "Socket.h"
+
+namespace cppsockets {
 
 enum AddressFamily {
    IPV4 = AF_INET,
@@ -33,4 +35,6 @@ public:
 
 };
 
-#endif /* __TCPSOCKET_H */
+} // namespace cppsockets
+
+#endif /* __CPPSOCKETS__TCPSOCKET_H */

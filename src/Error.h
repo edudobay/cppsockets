@@ -1,8 +1,10 @@
-#ifndef __ERROR_H
-#define __ERROR_H
+#ifndef __CPPSOCKETS__ERROR_H
+#define __CPPSOCKETS__ERROR_H
 
 #include <exception>
 #include <string>
+
+namespace cppsockets {
 
 using std::exception;
 using std::string;
@@ -54,4 +56,6 @@ public:
 
 #define SOCKET_ERROR(num, func) throw UnixError(num, func, __PRETTY_FUNCTION__, __FILE__, __LINE__)
 
-#endif /* __ERROR_H */
+} // namespace cppsockets
+
+#endif /* __CPPSOCKETS__ERROR_H */

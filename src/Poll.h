@@ -1,9 +1,13 @@
-#ifndef __POLL_H
-#define __POLL_H
+#ifndef __CPPSOCKETS__POLL_H
+#define __CPPSOCKETS__POLL_H
 
 #include <poll.h>
 #include <vector>
 
+namespace cppsockets {
+
 int poll (std::vector<pollfd>& fds, int timeout_ms);
 
-#endif /* __POLL_H */
+} // namespace cppsockets
+
+#endif /* __CPPSOCKETS__POLL_H */

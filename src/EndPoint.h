@@ -1,5 +1,5 @@
-#ifndef __ENDPOINT_H
-#define __ENDPOINT_H
+#ifndef __CPPSOCKETS__ENDPOINT_H
+#define __CPPSOCKETS__ENDPOINT_H
 
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -8,6 +8,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+
+namespace cppsockets {
 
 using std::string;
 using std::shared_ptr;
@@ -61,4 +63,6 @@ class UnixEndPoint : public EndPoint {
    UnixEndPoint(sockaddr *address, socklen_t address_len);
 };
 
-#endif /* __ENDPOINT_H */
+} // namespace cppsockets
+
+#endif /* __CPPSOCKETS__ENDPOINT_H */

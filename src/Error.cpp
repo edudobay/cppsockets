@@ -4,6 +4,8 @@
 #include <cstring>
 #include <cstdio>
 
+namespace cppsockets {
+
 using std::stringstream;
 
 ITracksSource::ITracksSource (const char *func, const char *filename, int line)
@@ -49,3 +51,4 @@ const char *NameResolutionError::what()
    return description;
 }
 
+} // namespace cppsockets
