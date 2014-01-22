@@ -102,6 +102,10 @@ int Socket::send (const char *data, size_t length)
 {
    int nbytes = ::send(descriptor, data, length, 0);
    if (nbytes == -1) {
+      // Don't issue an error if operation would block
+      if (errno == EWOULDBLOCK) {
+         return 0;
+      }
       SOCKET_ERROR(errno, "send");
    }
    return nbytes;
@@ -112,6 +116,7 @@ int Socket::send (string str)
    return send(str.c_str(), str.length());
 }
 
+// TODO: this won't work correctly if socket is in non-blocking mode
 int Socket::send_all (const char *data, size_t length)
 {
    size_t sent = 0;
@@ -132,6 +137,10 @@ int Socket::recv (char *data, size_t length)
 {
    int nbytes = ::recv(descriptor, data, length, 0);
    if (nbytes == -1) {
+      // Don't issue an error if operation would block
+      if (errno == EWOULDBLOCK) {
+         return 0;
+      }
       SOCKET_ERROR(errno, "recv");
    }
    return nbytes;
