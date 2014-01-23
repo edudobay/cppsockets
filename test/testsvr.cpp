@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
 
 
          cout << "Disconnecting." << endl;
-         client->shutdown(Write);
+         client->shutdown(ShutdownMode::Write);
 
          cout << "Closing." << endl;
          client->close();
       }
 
       cout << "Shutting down listener." << endl;
-      sock.shutdown(ReadWrite);
+      sock.shutdown(ShutdownMode::ReadWrite);
 
       cout << "Closing listener." << endl;
       sock.close();

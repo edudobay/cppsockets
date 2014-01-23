@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
                   if (data == ".\n") {
                      cout << "Closing this client connection" << endl;
-                     client->shutdown(ReadWrite);
+                     client->shutdown(ShutdownMode::ReadWrite);
                      client->close();
 
                      // preserve old iterator to continue the loop
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
             if (shutdown) {
                for (auto it = clients.begin(); it != clients.end(); ++it) {
                   shared_ptr<TCPSocket> client = *it;
-                  client->shutdown(ReadWrite);
+                  client->shutdown(ShutdownMode::ReadWrite);
                   client->close();
                }
                clients.clear();
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
       }
 
       cout << "Shutting down listener." << endl;
-      sock.shutdown(ReadWrite);
+      sock.shutdown(ShutdownMode::ReadWrite);
 
       sock.close();
    }

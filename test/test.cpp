@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
       cout << "\033[37;40m" << data << "\033[0m" << endl;
 
       cout << "Disconnecting." << endl;
-      sock.shutdown(Write);
+      sock.shutdown(ShutdownMode::Write);
 
       cout << "Closing." << endl;
       sock.close();
