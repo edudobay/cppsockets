@@ -54,6 +54,7 @@ public:
 
    void setBlockMode (BlockingMode mode);
    bool wouldBlock() const;
+   int getError () const;
 
    int send (const char *data, size_t length);
    int send (string str);

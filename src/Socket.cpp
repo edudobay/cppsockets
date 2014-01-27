@@ -109,6 +109,16 @@ bool Socket::wouldBlock() const
    return lastWouldBlock;
 }
 
+int Socket::getError () const
+{
+   int code;
+   unsigned len = sizeof(code);
+   if (getsockopt(descriptor, SOL_SOCKET, SO_ERROR, &code, &len) == -1) {
+      SOCKET_ERROR(errno, "getsockopt");
+   }
+   return code;
+}
+
 int Socket::send (const char *data, size_t length)
 {
    int nbytes = ::send(descriptor, data, length, 0);
