@@ -104,6 +104,11 @@ void Socket::setBlockMode (BlockingMode mode)
    }
 }
 
+bool Socket::wouldBlock() const
+{
+   return lastWouldBlock;
+}
+
 int Socket::send (const char *data, size_t length)
 {
    int nbytes = ::send(descriptor, data, length, 0);
@@ -141,10 +146,12 @@ int Socket::send_all (string str)
 
 int Socket::recv (char *data, size_t length)
 {
+   lastWouldBlock = false;
    int nbytes = ::recv(descriptor, data, length, 0);
    if (nbytes == -1) {
       // Don't issue an error if operation would block
       if (errno == EWOULDBLOCK) {
+         lastWouldBlock = true;
          return 0;
       }
       SOCKET_ERROR(errno, "recv");

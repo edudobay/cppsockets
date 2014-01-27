@@ -38,6 +38,8 @@ protected:
    int type;
    int protocol;
 
+   bool lastWouldBlock = false;
+
 public:
    Socket(int family, int socktype, int protocol);
    Socket(EndPoint& ep, int socktype, int protocol);
@@ -51,6 +53,7 @@ public:
    void close ();
 
    void setBlockMode (BlockingMode mode);
+   bool wouldBlock() const;
 
    int send (const char *data, size_t length);
    int send (string str);
