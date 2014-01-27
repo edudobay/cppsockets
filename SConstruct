@@ -1,14 +1,12 @@
-SConscript('colors.scons')
-Import('env')
+env = Environment(
+   CPPPATH=Dir('src'),
+   LIBPATH=Dir('build'),
+   CXXFLAGS='-std=c++11 -Wall -g'
+)
 
-env = env.Clone(
-   CPPPATH='src',
-   CXXFLAGS='-std=c++11 -Wall')
+Export('env')
 
-lib_sources = ['src/' + fn + '.cpp' for fn in Split('EndPoint Error Poll Socket TCPSocket')]  
-
-env.Program(target='bin/test', source=['test.cpp'] + lib_sources)
-env.Program(target='bin/testsvr', source=['testsvr.cpp'] + lib_sources)
-env.Program(target='bin/testpoll', source=['testpoll.cpp'] + lib_sources)
+SConscript('src/SConscript', variant_dir='build', duplicate=0)
+SConscript('test/SConscript', variant_dir='build_test', duplicate=0)
 
 # vim:set ft=python sw=3:

@@ -1,0 +1,10 @@
+Import('env')
+
+env = env.Clone(
+   LIBS='-lcppsockets'
+)
+
+env.Program('test.cpp')
+env.Program('testsvr.cpp')
+env.Program('testpoll.cpp')
+
