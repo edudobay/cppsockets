@@ -15,6 +15,11 @@ Socket::Socket(socket_t s)
    : descriptor(s)
 {}
 
+Socket::~Socket()
+{
+   close();
+}
+
 Socket::Socket(int family, int socktype, int protocol)
    : protocol_family(family), type(socktype), protocol(protocol)
 {
@@ -81,9 +86,10 @@ void Socket::shutdown (ShutdownMode mode)
 
 void Socket::close ()
 {
-   if (::close(descriptor) == -1) {
+   if (descriptor != -1 && ::close(descriptor) == -1) {
       SOCKET_ERROR(errno, "close");
    }
+   descriptor = -1;
 }
 
 void Socket::setBlockMode (BlockingMode mode)

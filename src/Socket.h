@@ -41,7 +41,7 @@ protected:
 public:
    Socket(int family, int socktype, int protocol);
    Socket(EndPoint& ep, int socktype, int protocol);
-   //Socket(addrinfo *addr);
+   ~Socket();
 
    void connect (const EndPoint& endpoint);
    void bind (const EndPoint& endpoint);
