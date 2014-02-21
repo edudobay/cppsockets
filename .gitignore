@@ -1,2 +1,6 @@
-bin
-*.o
+# Build dirs
+build/
+build_test/
+
+# SCons cache
+.sconsign.dblite
