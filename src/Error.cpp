@@ -28,6 +28,7 @@ const char *UnixError::what() const noexcept
 {
    stringstream ss;
    ss << "[Error " << num << "] " << error_str;
+   ss << "; " << source();
    return ss.str().c_str();
 }
 
@@ -37,6 +38,12 @@ const char *UnixError::source() const noexcept
    ss << failed_func << " failed at " << func << "(" << filename << ":" << line << ")";
    return ss.str().c_str();
 }
+
+int UnixError::number() const noexcept {
+   return num;
+}
+
+// ---------------------------------------------------------------------------
 
 NameResolutionError::NameResolutionError(const char *message)
 {

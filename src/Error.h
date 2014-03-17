@@ -39,6 +39,7 @@ public:
          const char *source_func, const char *filename, int line);
    const char *what() const noexcept;
    const char *source() const noexcept;
+   int number() const noexcept;
 };
 
 // ---------------------------------------------------------------------------
