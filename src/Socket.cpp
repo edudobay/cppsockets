@@ -8,11 +8,11 @@
 namespace cppsockets {
 
 Socket::Socket()
-   : descriptor(-1)
+   : descriptor(-1), protocol_family(-1), type(-1), protocol(-1)
 {}
 
 Socket::Socket(socket_t s)
-   : descriptor(s)
+   : descriptor(s), protocol_family(-1), type(-1), protocol(-1)
 {}
 
 Socket::~Socket()
